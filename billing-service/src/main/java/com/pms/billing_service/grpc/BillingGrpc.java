@@ -1,0 +1,41 @@
+package com.pms.billing_service.grpc;
+
+//import org.springframework.grpc.server.service.GrpcService;f
+import billing.BillingAccount;
+import billing.BillingServiceGrpc;
+import com.pms.billing_service.service.BillingService;
+import billing.Patient;
+import com.pms.billing_service.dto.BillingCreation;
+import com.pms.billing_service.dto.BillingResponse;
+import io.grpc.stub.StreamObserver;
+import org.springframework.grpc.server.service.GrpcService;
+import org.springframework.stereotype.Service;
+
+
+@GrpcService
+public class BillingGrpc extends BillingServiceGrpc.BillingServiceImplBase {
+
+    private final BillingService billingService;
+
+    public BillingGrpc(BillingService billingService) {
+        this.billingService = billingService;
+    }
+
+    @Override
+    public void createBillingAccount(Patient request, StreamObserver<BillingAccount> responseObserver) {
+        BillingCreation billingCreation = new BillingCreation(request.getEmail(), 0);
+
+        BillingResponse billingResponse = billingService.createBillingAccount(billingCreation);
+
+        BillingAccount billingAccount = BillingAccount
+                .newBuilder()
+                .setBillingAccountId(billingResponse.getId().toString())
+                .setEmail(billingCreation.getEmail())
+                .setPatientId(request.getPatientId())
+                .build();
+
+        responseObserver.onNext(billingAccount);
+        responseObserver.onCompleted();
+
+    }
+}
