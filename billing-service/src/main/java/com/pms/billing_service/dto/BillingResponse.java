@@ -13,5 +13,6 @@ public class BillingResponse {
 
     private UUID id;
     private String email;
+    private int amountDue;
 
 }

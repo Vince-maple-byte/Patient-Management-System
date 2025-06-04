@@ -1,34 +1,43 @@
 package com.pms.billing_service.service;
 
 import com.pms.billing_service.dto.BillingCreation;
+import com.pms.billing_service.dto.BillingMapper;
 import com.pms.billing_service.dto.BillingResponse;
 import com.pms.billing_service.model.Billing;
 import com.pms.billing_service.repository.BillingRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class BillingServiceImpl implements BillingService{
 
     private final BillingRepository billingRepository;
+    private final BillingMapper billingMapper;
 
-    public BillingServiceImpl(BillingRepository billingRepository) {
+    public BillingServiceImpl(BillingRepository billingRepository, BillingMapper billingMapper) {
         this.billingRepository = billingRepository;
+        this.billingMapper = billingMapper;
     }
-
-    //TODO: Make a mapper class to convert BillingCreation object to Billing entity object
+    
     @Override
     public BillingResponse createBillingAccount(BillingCreation billingCreation) {
-        Billing billing = new Billing();
-        billing.setEmail(billingCreation.getEmail());
-        billing.setAmountDue(billingCreation.getAmountDue());
+        Billing billing = billingMapper.toEntity(billingCreation);
         billingRepository.save(billing);
-        return new BillingResponse(billing.getId(),billing.getEmail());
+        return new BillingResponse(billing.getId(),billing.getEmail(),billing.getAmountDue());
     }
 
     @Override
     public List<BillingResponse> getBillingAccounts() {
-        return null;
+        List<Billing> billings = billingRepository.findAll();
+        return billings.stream().map(billing -> billingMapper.toResponse(billing)).toList();
+    }
+
+    @Override
+    public BillingResponse deleteBillingAccount(UUID patientId) {
+        Billing deletedBilling = billingRepository.deleteByPatientId(patientId);
+
+        return billingMapper.toResponse(deletedBilling);
     }
 }
