@@ -11,6 +11,8 @@ import io.grpc.stub.StreamObserver;
 import org.springframework.grpc.server.service.GrpcService;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 
 @GrpcService
 public class BillingGrpc extends BillingServiceGrpc.BillingServiceImplBase {
@@ -38,4 +40,22 @@ public class BillingGrpc extends BillingServiceGrpc.BillingServiceImplBase {
         responseObserver.onCompleted();
 
     }
+
+    @Override
+    public void deleteBillingAccount(billing.Patient request, io.grpc.stub.StreamObserver<billing.BillingAccount> responseObserver){
+
+        BillingResponse billingResponse = billingService.deleteBillingAccount(UUID.fromString(request.getPatientId()));
+
+        BillingAccount billingAccount = BillingAccount
+                .newBuilder()
+                .setBillingAccountId(billingResponse.getId().toString())
+                .setEmail(request.getEmail())
+                .setPatientId(request.getPatientId())
+                .build();
+
+        responseObserver.onNext(billingAccount);
+        responseObserver.onCompleted();
+    }
+
+
 }

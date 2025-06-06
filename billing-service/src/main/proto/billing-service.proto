@@ -4,6 +4,7 @@ option java_package = "billing";
 
 service BillingService {
     rpc CreateBillingAccount(Patient) returns (BillingAccount);
+    rpc DeleteBillingAccount(Patient) returns (BillingAccount);
 }
 
 message Patient{
