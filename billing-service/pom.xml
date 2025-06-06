@@ -12,7 +12,7 @@
 	<artifactId>billing-service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>billing-service</name>
-	<description>Demo project for Spring Boot</description>
+	<description>Patient Management System in Spring Boot</description>
 	<url/>
 	<licenses>
 		<license/>

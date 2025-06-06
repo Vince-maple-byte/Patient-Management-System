@@ -1,0 +1,19 @@
+syntax = "proto3";
+option java_multiple_files = true;
+option java_package = "billing";
+
+service BillingService {
+  rpc CreateBillingAccount(Patient) returns (BillingAccount);
+  rpc DeleteBillingAccount(Patient) returns (BillingAccount);
+}
+
+message Patient{
+  string patient_id = 1;
+  string email = 2;
+}
+
+message BillingAccount{
+  string billing_account_id = 1;
+  string patient_id = 2;
+  string email = 3;
+}
