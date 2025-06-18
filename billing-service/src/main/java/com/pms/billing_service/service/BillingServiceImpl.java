@@ -20,7 +20,7 @@ public class BillingServiceImpl implements BillingService{
         this.billingRepository = billingRepository;
         this.billingMapper = billingMapper;
     }
-    
+
     @Override
     public BillingResponse createBillingAccount(BillingCreation billingCreation) {
         Billing billing = billingMapper.toEntity(billingCreation);
@@ -31,7 +31,7 @@ public class BillingServiceImpl implements BillingService{
     @Override
     public List<BillingResponse> getBillingAccounts() {
         List<Billing> billings = billingRepository.findAll();
-        return billings.stream().map(billing -> billingMapper.toResponse(billing)).toList();
+        return billings.stream().map(billingMapper::toResponse).toList();
     }
 
     @Override

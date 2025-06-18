@@ -41,7 +41,7 @@ public class BillingGrpc extends BillingServiceGrpc.BillingServiceImplBase {
 
     }
 
-    @Override
+
     public void deleteBillingAccount(billing.Patient request, io.grpc.stub.StreamObserver<billing.BillingAccount> responseObserver){
 
         BillingResponse billingResponse = billingService.deleteBillingAccount(UUID.fromString(request.getPatientId()));
