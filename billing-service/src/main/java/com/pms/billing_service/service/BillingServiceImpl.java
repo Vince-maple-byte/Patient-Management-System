@@ -13,6 +13,8 @@ import java.util.UUID;
 @Service
 public class BillingServiceImpl implements BillingService{
 
+    //TODO Write a exception for when the same email is entered
+
     private final BillingRepository billingRepository;
     private final BillingMapper billingMapper;
 

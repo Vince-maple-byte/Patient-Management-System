@@ -20,6 +20,9 @@ public class Billing {
     @Column(unique = true)
     private String email;
 
+    @Column(unique = true)
+    private UUID patientId;
+
     private int amountDue;
 
 }
