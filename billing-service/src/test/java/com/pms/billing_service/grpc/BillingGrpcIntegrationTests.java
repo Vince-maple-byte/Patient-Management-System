@@ -6,6 +6,8 @@ import billing.Patient;
 import com.pms.billing_service.dto.BillingResponse;
 import com.pms.billing_service.service.BillingService;
 import io.grpc.Channel;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -28,13 +30,18 @@ import static org.mockito.Mockito.when;
 @SpringBootTest
 @AutoConfigureInProcessTransport
 class BillingGrpcIntegrationTests {
+    @Value("${spring.grpc.test.in-process-name}")
+    private String serverName;
+
+    //private final ManagedChannel channel = InProcessChannelBuilder.forName(serverName).directExecutor().build();
 
     private BillingServiceGrpc.BillingServiceBlockingStub stub;
 
-    @Autowired
-    void setStub(@Value("${spring.grpc.test.in-process-name}") String serverName) {
+    @BeforeEach
+    void setStub() {
+        //System.out.println(serverName);
         ManagedChannel channel = InProcessChannelBuilder.forName(serverName).directExecutor().build();
-        this.stub = BillingServiceGrpc.newBlockingStub(channel);
+        stub = BillingServiceGrpc.newBlockingStub(channel);
     }
 
     @MockitoBean

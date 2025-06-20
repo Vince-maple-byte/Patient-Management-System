@@ -12,4 +12,5 @@ import java.util.UUID;
 public class BillingCreation {
     private String email;
     private int amountDue;
+    private UUID patientId;
 }

@@ -21,10 +21,12 @@ public class BillingMapperTests {
     public void testBillingMapperToEntity_Success() {
         //Given
         String email = "jack@gmail.com";
-        BillingCreation billingCreation = new BillingCreation(email, 0);
+        UUID patientId = UUID.randomUUID();
+        BillingCreation billingCreation = new BillingCreation(email, 0, patientId);
         Billing expectedBilling = Billing.builder()
                 .email(email)
                 .amountDue(0)
+                .patientId(patientId)
                 .build();
 
         //When
@@ -34,18 +36,21 @@ public class BillingMapperTests {
 
         assertEquals(expectedBilling.getEmail(), billing.getEmail());
         assertEquals(expectedBilling.getAmountDue(), billing.getAmountDue());
+        assertEquals(expectedBilling.getPatientId(), billing.getPatientId());
     }
 
     @Test
     public void testBillingMapperToResponse_Success() {
         //Given
         String email = "jack@gmail.com";
-        UUID id = UUID.randomUUID();
-        BillingResponse billingResponse = new BillingResponse(id,email,0);
+        UUID billingId = UUID.randomUUID();
+        UUID patientId = UUID.randomUUID();
+        BillingResponse billingResponse = new BillingResponse(billingId,email,0, patientId);
         Billing expectedBilling = Billing.builder()
                 .email(email)
                 .amountDue(0)
-                .id(id)
+                .id(billingId)
+                .patientId(patientId)
                 .build();
 
         //When
@@ -56,5 +61,6 @@ public class BillingMapperTests {
         assertEquals(expectedBilling.getEmail(), billingResponse.getEmail());
         assertEquals(expectedBilling.getAmountDue(), billingResponse.getAmountDue());
         assertEquals(expectedBilling.getId(), billingResponse.getId());
+        assertEquals(expectedBilling.getPatientId(), billingResponse.getPatientId());
     }
 }

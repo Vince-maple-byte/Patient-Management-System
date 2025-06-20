@@ -6,11 +6,14 @@ import com.pms.billing_service.dto.BillingResponse;
 import com.pms.billing_service.model.Billing;
 import com.pms.billing_service.repository.BillingRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
+@Transactional
 public class BillingServiceImpl implements BillingService{
 
     //TODO Write a exception for when the same email is entered
@@ -27,7 +30,7 @@ public class BillingServiceImpl implements BillingService{
     public BillingResponse createBillingAccount(BillingCreation billingCreation) {
         Billing billing = billingMapper.toEntity(billingCreation);
         billingRepository.save(billing);
-        return new BillingResponse(billing.getId(),billing.getEmail(),billing.getAmountDue());
+        return new BillingResponse(billing.getId(),billing.getEmail(),billing.getAmountDue(),billing.getPatientId());
     }
 
     @Override
@@ -38,8 +41,9 @@ public class BillingServiceImpl implements BillingService{
 
     @Override
     public BillingResponse deleteBillingAccount(UUID patientId) {
-        Billing deletedBilling = billingRepository.deleteByPatientId(patientId);
+        Optional<Billing> deletedBilling = billingRepository.findByPatientId(patientId);
+        deletedBilling.ifPresent(billingRepository::delete);
+        return deletedBilling.map(billingMapper::toResponse).orElse(null);
 
-        return billingMapper.toResponse(deletedBilling);
     }
 }
