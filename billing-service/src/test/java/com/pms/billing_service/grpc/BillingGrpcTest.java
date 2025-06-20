@@ -40,11 +40,6 @@ class BillingGrpcTest {
                 .amountDue(0)
                 .build();
 
-//        BillingAccount billingAccount = BillingAccount.newBuilder()
-//                        .setBillingAccountId(billingId.toString())
-//                        .setEmail(email)
-//                        .setPatientId(patientId.toString())
-//                        .build();
 
         when(billingService.createBillingAccount(any(BillingCreation.class)))
                 .thenReturn(billingResponse);
