@@ -10,6 +10,7 @@ public class BillingMapper {
         Billing billing = new Billing();
         billing.setEmail(billingCreation.getEmail());
         billing.setAmountDue(billingCreation.getAmountDue());
+        billing.setPatientId(billingCreation.getPatientId());
         return billing;
     }
 
@@ -19,6 +20,7 @@ public class BillingMapper {
         billingResponse.setEmail(billing.getEmail());
         billingResponse.setId(billing.getId());
         billingResponse.setAmountDue(billing.getAmountDue());
+        billingResponse.setPatientId(billing.getPatientId());
 
         return billingResponse;
     }

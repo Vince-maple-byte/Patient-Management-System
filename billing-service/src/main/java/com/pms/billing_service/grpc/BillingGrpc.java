@@ -25,7 +25,11 @@ public class BillingGrpc extends BillingServiceGrpc.BillingServiceImplBase {
 
     @Override
     public void createBillingAccount(Patient request, StreamObserver<BillingAccount> responseObserver) {
-        BillingCreation billingCreation = new BillingCreation(request.getEmail(), 0);
+        BillingCreation billingCreation = new BillingCreation(
+                request.getEmail(),
+                0,
+                UUID.fromString(request.getPatientId()
+                ));
 
         BillingResponse billingResponse = billingService.createBillingAccount(billingCreation);
 
